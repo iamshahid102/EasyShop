@@ -1,0 +1,357 @@
+/* ========================================
+   LAYER ORDER — Defines cascade priority
+   Base < Utilities
+   ======================================== */
+@layer base, utilities;
+
+/* ========================================
+   TAILWIND CSS v4 — CSS-first configuration
+   ======================================== */
+@import "tailwindcss";
+
+/* ========================================
+   DESIGN TOKENS — CSS Custom Properties
+   Unlayered: available globally across all layers
+   ======================================== */
+:root {
+  /* Core Brand Colors — Hybrid Rosaline + Existing Orange */
+  --color-brand-primary: #dd6b20;          /* Warm orange (kept from original) */
+  --color-brand-primary-dark: #c25f1c;     /* Darker orange for hover */
+  --color-brand-primary-light: #f59e6b;    /* Lighter orange for accents */
+  --color-brand-accent: #1a202c;           /* Deep charcoal */
+  --color-brand-accent-light: #2d3748;     /* Lighter charcoal */
+
+  /* Background Colors — Warmer neutrals (Rosaline-inspired) */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #faf8f6;           /* Warm off-white */
+  --color-bg-tertiary: #f5f2ef;            /* Warmer beige */
+  --color-bg-dark: #1a202c;
+  --color-bg-card: #ffffff;
+  --color-bg-elevated: #ffffff;
+
+  /* Text Colors */
+  --color-text-primary: #1a202c;
+  --color-text-secondary: #4a5568;
+  --color-text-tertiary: #718096;
+  --color-text-inverse: #ffffff;
+  --color-text-on-accent: #ffffff;
+
+  /* Border Colors */
+  --color-border: #e8e2dc;                 /* Warm taupe border */
+  --color-border-light: #f0ece7;
+  --color-border-dark: #c8c2ba;
+
+  /* Shadow Scale — Softer, more natural (Rosaline-inspired) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.10), 0 8px 16px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 24px 60px rgba(0, 0, 0, 0.12);
+
+  /* Border Radius — Larger, more modern */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Backward Compatibility — Map old var names to new ones */
+  --color-base-background-1: var(--color-bg-primary);
+  --color-base-background-2: var(--color-bg-secondary);
+  --color-base-accent-1: var(--color-brand-primary);
+  --color-base-accent-2: var(--color-brand-accent);
+  --color-base-border: var(--color-border);
+  --color-base-text: var(--color-text-secondary);
+  --color-base-text-light: var(--color-text-tertiary);
+  --color-shadow: var(--color-border);
+
+  /* Spacing Scale — 4px base */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
+  --space-3xl: 48px;
+  --space-4xl: 64px;
+  --space-5xl: 80px;
+  --space-6xl: 96px;
+
+  /* Transitions — Smooth and premium */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Semantic Colors */
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-info: #2563eb;
+  --color-rating-filled: #f59e0b;
+  --color-rating-empty: #d1d5db;
+}
+
+/* ========================================
+   KEYFRAMES — Must remain unlayered for CSS animations to work
+   ======================================== */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ========================================
+   BASE LAYER — Element-level resets & defaults
+   Tailwind utilities (higher layer) can override these naturally
+   ======================================== */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-primary);
+    color: white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem 0;
+  }
+
+  h1 {
+    font-size: clamp(1.875rem, 5vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 1.875rem);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  h4 {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  p {
+    margin: 0 0 1rem 0;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ========================================
+   UTILITIES LAYER — Custom utility classes
+   Same layer as Tailwind utilities — both override base layer
+   ======================================== */
+@layer utilities {
+  .container-premium {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .section-padding {
+    padding: var(--space-4xl) 0;
+  }
+
+  .section-padding-sm {
+    padding: var(--space-2xl) 0;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .animate-slideInRight { animation: slideInRight 0.3s ease-out; }
+  .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+  .animate-fadeInUp { animation: fadeInUp 0.5s ease-out; }
+  .animate-scaleIn { animation: scaleIn 0.25s ease-out; }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+
+  .skeleton {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, var(--color-bg-tertiary) 0%, var(--color-border) 50%, var(--color-bg-tertiary) 100%);
+    background-size: 1000px 100%;
+  }
+
+  /* GSAP Animation Hooks */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  [data-animate].animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  [data-animate="fade"] {
+    opacity: 0;
+    transform: none;
+  }
+
+  [data-animate="fade"].animate-in {
+    opacity: 1;
+  }
+
+  [data-animate="slide-left"] {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  [data-animate="slide-left"].animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  [data-animate="slide-right"] {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  [data-animate="slide-right"].animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  [data-animate="scale"] {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  [data-animate="scale"].animate-in {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  [data-animate].animate-out {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg-tertiary); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-full); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
+
+  /* Tailwind v4 Container Query Support */
+  @container (max-width: 640px) {
+    .responsive-stack {
+      flex-direction: column;
+    }
+  }
+}
+
+/* ========================================
+   PRINT STYLES — Legitimate !important use
+   ======================================== */
+@media print {
+  nav, footer { display: none !important; }
+}
+
+/* ========================================
+   RESPONSIVE HIDE/SHOW HELPERS — Legitimate !important use
+   ======================================== */
+@media (max-width: 640px) {
+  .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hide-tablet { display: none !important; }
+}
+
+@media (min-width: 1025px) {
+  .hide-desktop { display: none !important; }
+}
