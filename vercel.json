@@ -1,15 +1,3 @@
 {
-  "version": 2,
-  "env": {
-    "MONGODB_URI": "@mongodb-uri",
-    "JWT_SECRET": "@jwt-secret"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production",
-      "NEXT_PUBLIC_APP_URL": "@next-public-app-url",
-      "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME": "@next-public-cloudinary-cloud-name",
-      "NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "@next-public-cloudinary-upload-preset"
-    }
-  }
+  "version": 2
 }

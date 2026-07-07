@@ -7,7 +7,7 @@ if (!cached) {
 }
 
 async function connectDB() {
-  const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI;
+  const MONGODB_URI = process.env.MONGODB_URI;
 
   if (!MONGODB_URI) {
     throw new Error('Please define MONGODB_URI environment variable');
@@ -28,13 +28,13 @@ async function connectDB() {
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       // Only log in development
-      if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') {
         console.log('[OK] MongoDB connected successfully');
       }
       return mongoose;
     }).catch((error) => {
       // Log errors in all environments but don't expose details in production
-      if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') {
         console.error('[ERROR] MongoDB connection error:', error);
       } else {
         console.error('[ERROR] MongoDB connection failed');

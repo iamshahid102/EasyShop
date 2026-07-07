@@ -35,7 +35,7 @@ export const protect = async (req) => {
     }
 
     // Check if JWT_SECRET exists
-    if (!process.env.NEXT_PUBLIC_JWT_SECRET) {
+    if (!process.env.JWT_SECRET) {
       console.error('[ERROR] JWT_SECRET is not defined in environment variables');
       return {
         error: 'Server configuration error',
@@ -46,7 +46,7 @@ export const protect = async (req) => {
     await connectDB();
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Get user from database
     const user = await User.findById(decoded.userId).select('-password');
