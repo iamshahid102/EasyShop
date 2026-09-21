@@ -164,23 +164,23 @@ export default function AdminProductsPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Total Products</div>
             <div className="text-3xl font-bold mt-2">{pagination.total}</div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">In Stock</div>
             <div className="text-3xl font-bold mt-2 text-green-600">
               {products.filter((p) => p.stock > 0).length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Out of Stock</div>
             <div className="text-3xl font-bold mt-2 text-red-600">
               {products.filter((p) => p.stock === 0).length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Categories</div>
             <div className="text-3xl font-bold mt-2">
               {new Set(products.map((p) => p.category)).size}
@@ -189,7 +189,7 @@ export default function AdminProductsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-4 rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white p-4 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
@@ -241,9 +241,9 @@ export default function AdminProductsPage() {
         </div>
 
         {/* Products Table */}
-        <div className="bg-white rounded-lg shadow-md border border-[var(--color-border)] overflow-hidden">
+        <div className="bg-white rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] overflow-hidden">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
+            <div className="flex justify-center items-center py-14">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-brand-primary)]"></div>
               <p className="ml-4 text-[var(--color-text-secondary)]">Loading products...</p>
             </div>
@@ -388,7 +388,7 @@ export default function AdminProductsPage() {
               )}
             </>
           ) : (
-            <div className="text-center py-20">
+            <div className="text-center py-14">
               <svg className="w-16 h-16 mx-auto mb-4 text-[var(--color-text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>

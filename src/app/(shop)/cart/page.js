@@ -4,15 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { formatPrice } from '@/lib/utils/helpers';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
-import { LoadingPage } from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function CartPage() {
   const router = useRouter();
@@ -28,7 +26,12 @@ export default function CartPage() {
   }, [user, authLoading, router]);
 
   if (authLoading || cartLoading) {
-    return <LoadingPage />;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 min-h-[60vh]">
+        <LoadingSpinner size="xl" />
+        <p className="text-[var(--color-text-secondary)] mt-4 font-medium">Loading your cart...</p>
+      </div>
+    );
   }
 
   const handleQuantityChange = async (itemId, newQuantity) => {
@@ -62,10 +65,8 @@ export default function CartPage() {
   // Empty Cart State
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center p-4 ">
-          <div className="text-center max-w-md">
+      <div className="flex items-center justify-center p-4 py-16 min-h-[60vh]">
+        <div className="text-center max-w-md">
             <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-5 bg-[var(--color-bg-secondary)] rounded-full flex items-center justify-center">
               <svg
                 className="w-12 h-12 sm:w-14 sm:h-14 text-[var(--color-text-tertiary)]"
@@ -101,27 +102,22 @@ export default function CartPage() {
               </Button>
             </Link>
           </div>
-        </main>
-        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Page Header */}
-        <div className="relative bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] text-white overflow-hidden">
+        <div className="relative bg-gradient-dark text-white overflow-hidden">
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-orange-500 rounded-full blur-3xl" />
+            <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-[var(--color-brand-primary)] rounded-full blur-3xl" />
           </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-            <h1 className="text-4xl sm:text-2xl lg:text-3xl text-white/70 font-extrabold mb-2">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold mb-2">
               Shopping Cart
             </h1>
-            <p className="text-sm sm:text-base text-white/70">
+            <p className="text-sm sm:text-base text-white/75">
               {cart.items.length} {cart.items.length === 1 ? 'item' : 'items'} in your cart
             </p>
           </div>
@@ -322,7 +318,7 @@ export default function CartPage() {
                     <span>Safe Payment Options</span>
                   </div>
                   <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-[var(--color-text-secondary)]">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-brand-primary)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                     <span>Easy Returns</span>
@@ -332,9 +328,6 @@ export default function CartPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

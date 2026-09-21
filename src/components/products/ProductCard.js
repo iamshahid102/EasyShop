@@ -29,14 +29,12 @@ export default function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
 
-    // Check if user is logged in
     if (!user) {
       error('Please login to add items to cart');
       setTimeout(() => router.push('/login'), 1000);
       return;
     }
 
-    // Check stock
     if (product.stock === 0) {
       error('This product is out of stock');
       return;
@@ -63,7 +61,7 @@ export default function ProductCard({ product }) {
     <>
       <Link
         href={`/products/${product._id}`}
-        className="group bg-[var(--color-bg-card)] rounded-2xl border border-[var(--color-border)] hover:border-[var(--color-brand-primary)] transition-all duration-300 overflow-hidden hover:shadow-lg flex flex-col h-full"
+        className="group card-hover bg-[var(--color-bg-card)] rounded-[var(--radius-xl)] border border-[var(--color-border)] overflow-hidden shadow-[var(--shadow-sm)] flex flex-col h-full"
       >
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden bg-[var(--color-bg-tertiary)]">
@@ -72,11 +70,11 @@ export default function ProductCard({ product }) {
               src={product.images[0].url}
               alt={product.images[0].alt || product.name}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
+            <div className="w-full h-full flex items-center justify-center text-[var(--color-text-tertiary)]">
               <svg className="w-10 h-10 sm:w-12 sm:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -90,32 +88,32 @@ export default function ProductCard({ product }) {
 
           {/* Discount Badge */}
           {discount > 0 && (
-            <div className="absolute top-2 left-2 bg-[var(--color-brand-primary)] text-white px-2 py-1 rounded-lg text-xs font-bold shadow-md">
+            <div className="absolute top-3 left-3 bg-gradient-brand text-white px-2.5 py-1 rounded-full text-[11px] font-bold shadow-[var(--shadow-brand-sm)] tracking-wide">
               -{discount}%
-            </div>
-          )}
-
-          {/* Stock Status */}
-          {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-              <span className="bg-white text-[var(--color-brand-accent)] px-3 py-1.5 rounded-lg font-bold text-xs shadow-lg">
-                Out of Stock
-              </span>
             </div>
           )}
 
           {/* New Badge */}
           {product.isNew && (
-            <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold shadow-md">
+            <div className="absolute top-3 right-3 bg-emerald-500 text-white px-2.5 py-1 rounded-full text-[11px] font-bold shadow-md tracking-wide">
               NEW
             </div>
           )}
 
+          {/* Out of Stock overlay */}
+          {product.stock === 0 && (
+            <div className="absolute inset-0 bg-[var(--color-brand-accent)]/60 backdrop-blur-sm flex items-center justify-center">
+              <span className="bg-white text-[var(--color-brand-accent)] px-3.5 py-1.5 rounded-full font-bold text-xs shadow-lg">
+                Out of Stock
+              </span>
+            </div>
+          )}
+
           {/* Quick View Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2 sm:pb-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:flex items-end justify-center pb-4">
             <button
               onClick={handleQuickView}
-              className="bg-white text-[var(--color-brand-accent)] px-3 py-2 rounded-lg font-semibold text-xs transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-[var(--color-brand-primary)] hover:text-white shadow-lg"
+              className="glass text-[var(--color-brand-accent)] px-4 py-2 rounded-full font-semibold text-xs translate-y-3 group-hover:translate-y-0 transition-transform duration-300 hover:bg-white shadow-lg"
             >
               Quick View
             </button>
@@ -123,27 +121,25 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Product Info */}
-        <div className="p-2.5 sm:p-3 flex-1 flex flex-col">
-          {/* Brand */}
+        <div className="p-3 sm:p-4 flex-1 flex flex-col">
           {product.brand && (
-            <p className="text-[10px] sm:text-xs font-semibold text-[var(--color-brand-primary)] uppercase tracking-wide mb-0.5">
+            <p className="text-[10px] sm:text-xs font-bold text-[var(--color-brand-primary)] uppercase tracking-[0.08em] mb-1">
               {product.brand}
             </p>
           )}
 
-          {/* Product Name */}
-          <h5 className="font-semibold text-xs sm:text-sm text-[var(--color-brand-accent)] mb-1 line-clamp-2 leading-tight group-hover:text-[var(--color-brand-primary)] transition-colors flex-1">
+          <h5 className="font-semibold text-sm text-[var(--color-brand-accent)] mb-1.5 line-clamp-2 leading-snug group-hover:text-[var(--color-brand-primary)] transition-colors flex-1">
             {product.name}
           </h5>
 
           {/* Rating */}
           {product.ratings && product.ratings.count > 0 && (
-            <div className="flex items-center gap-1 mb-1.5 sm:mb-2">
+            <div className="flex items-center gap-1.5 mb-2">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, index) => (
                   <svg
                     key={index}
-                    className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${
+                    className={`w-3 h-3 ${
                       index < Math.floor(product.ratings.average)
                         ? 'text-[var(--color-rating-filled)]'
                         : 'text-[var(--color-rating-empty)]'
@@ -155,43 +151,43 @@ export default function ProductCard({ product }) {
                   </svg>
                 ))}
               </div>
-              <span className="text-[10px] sm:text-xs font-semibold text-[var(--color-brand-accent)]">
+              <span className="text-[11px] font-semibold text-[var(--color-text-secondary)]">
                 {product.ratings.average.toFixed(1)}
               </span>
-              <span className="text-[9px] sm:text-[10px] text-[var(--color-text-secondary)]">
+              <span className="text-[10px] text-[var(--color-text-tertiary)]">
                 ({product.ratings.count})
               </span>
             </div>
           )}
 
           {/* Price */}
-          <div className="flex items-center gap-1 mb-1">
-            <span className="text-sm sm:text-base font-bold text-[var(--color-brand-accent)]">
+          <div className="flex items-baseline gap-2 mb-1">
+            <span className="text-base sm:text-lg font-extrabold text-[var(--color-brand-accent)] tracking-tight">
               {formatPrice(product.price)}
             </span>
             {product.comparePrice && product.comparePrice > product.price && (
-              <span className="text-[10px] sm:text-xs text-[var(--color-text-tertiary)] line-through">
+              <span className="text-xs text-[var(--color-text-tertiary)] line-through">
                 {formatPrice(product.comparePrice)}
               </span>
             )}
           </div>
 
-          {/* Stock Indicator */}
+          {/* Low stock */}
           {product.stock > 0 && product.stock < 10 && (
-            <p className="text-[8px] sm:text-[9px] text-orange-600 font-medium mt-0.5 sm:mt-1">
+            <p className="text-[10px] text-[var(--color-warning)] font-semibold mt-0.5">
               Only {product.stock} left in stock
             </p>
           )}
 
-          {/* Add to Cart Button - Appears on Hover */}
+          {/* Add to Cart — always visible on mobile, reveal on hover on desktop */}
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0 || addingToCart}
-            className="w-full mt-2 sm:mt-2.5 py-1.5 sm:py-2 bg-[var(--color-brand-primary)] text-white font-semibold rounded-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-[var(--color-brand-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs flex items-center justify-center gap-1.5"
+            className="btn-shine w-full mt-3 py-2.5 bg-gradient-brand bg-gradient-brand-hover text-white font-semibold rounded-[var(--radius-md)] opacity-100 sm:opacity-0 sm:group-hover:opacity-100 translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0 transition-all duration-300 shadow-[var(--shadow-brand-sm)] hover:shadow-[var(--shadow-brand)] disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm flex items-center justify-center gap-2"
           >
             {addingToCart ? (
               <>
-                <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -201,7 +197,7 @@ export default function ProductCard({ product }) {
               'Out of Stock'
             ) : (
               <>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 Add to Cart

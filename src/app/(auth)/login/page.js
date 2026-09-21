@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import Logo from '@/components/layout/Logo';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaShieldAlt, FaBolt, FaCheckCircle } from 'react-icons/fa';
 
 export default function LoginPage() {
@@ -22,12 +23,16 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redirect if already logged in
+  // Redirect if already logged in (respecting the ?redirect= target)
   useEffect(() => {
-    if (!authLoading && user) {
-      router.push(user.role === 'admin' ? '/admin/dashboard' : '/products');
+    if (authLoading || !user) return;
+
+    if (user.role === 'admin') {
+      router.replace(redirectTo.startsWith('/admin') ? redirectTo : '/admin/dashboard');
+    } else {
+      router.replace(redirectTo && redirectTo !== '/login' ? redirectTo : '/products');
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router, redirectTo]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -69,13 +74,8 @@ export default function LoginPage() {
         <div className="w-full max-w-md mx-auto">
           {/* Logo & Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <Link href="/" className="inline-flex items-center justify-center gap-2.5 mb-6 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:shadow-xl group-hover:shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
-                <span className="text-white font-extrabold text-2xl">E</span>
-              </div>
-              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--color-brand-accent)]">
-                EasyShop
-              </span>
+            <Link href="/" aria-label="EasyShop — Home" className="inline-flex justify-center mb-6 group">
+              <Logo className="h-16 sm:h-20 transition-transform duration-300 group-hover:scale-[1.04]" />
             </Link>
 
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--color-brand-accent)] mb-2 tracking-tight">
@@ -226,22 +226,22 @@ export default function LoginPage() {
       </div>
 
       {/* Right Side - Premium Branding Panel */}
-      <div className="hidden lg:flex lg:flex-1 relative bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] overflow-hidden">
+      <div className="hidden lg:flex lg:flex-1 relative bg-gradient-dark overflow-hidden">
         {/* Decorative Orbs */}
         <div className="absolute inset-0">
           <div className="absolute -top-1/4 -right-1/4 w-[60%] h-[60%] bg-gradient-to-br from-[var(--color-brand-primary)]/20 to-transparent rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/4 -left-1/4 w-[50%] h-[50%] bg-gradient-to-tr from-orange-500/20 to-transparent rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/4 -left-1/4 w-[50%] h-[50%] bg-gradient-to-tr from-[var(--color-brand-primary)]/20 to-transparent rounded-full blur-3xl" />
           <div className="absolute top-1/3 left-1/4 w-1.5 h-1.5 bg-white/30 rounded-full animate-pulse" />
-          <div className="absolute top-1/4 right-1/3 w-2.5 h-2.5 bg-orange-400/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/4 right-1/3 w-2.5 h-2.5 bg-[var(--color-brand-400)]/50 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
           <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-          <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-orange-300/30 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-[var(--color-brand-300)]/40 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
         </div>
 
         {/* Content */}
         <div className="relative flex flex-col justify-center items-center text-white p-8 sm:p-12 lg:p-16 text-center w-full">
           {/* Floating Card */}
           <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 sm:p-8 mb-8 sm:mb-10 border border-white/10 shadow-2xl max-w-sm w-full animate-float">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-brand rounded-2xl flex items-center justify-center shadow-lg shadow-[var(--shadow-brand)]">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
               </svg>
@@ -273,7 +273,7 @@ export default function LoginPage() {
               <span>Free Shipping Over Rs. 1,500</span>
             </div>
             <div className="flex items-center gap-2 text-xs sm:text-sm text-white/80">
-              <FaShieldAlt className="w-4 h-4 text-orange-400" />
+              <FaShieldAlt className="w-4 h-4 text-[var(--color-brand-400)]" />
               <span>Secure Payments</span>
             </div>
           </div>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Button from '@/components/ui/Button';
+import Logo from '@/components/layout/Logo';
 import { FaChartBar, FaBox, FaShoppingCart, FaUsers, FaChartLine, FaCog } from 'react-icons/fa';
 
 export default function AdminLayout({ children }) {
@@ -32,22 +33,18 @@ export default function AdminLayout({ children }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-                <div className="w-9 h-9 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-                  <span className="text-white font-extrabold text-sm">E</span>
-                </div>
-                <span className="text-lg font-extrabold text-[var(--color-brand-accent)] tracking-tight">
-                  EasyShop
-                </span>
+              <Link
+                href="/admin/dashboard"
+                aria-label="EasyShop Admin — Dashboard"
+                className="group flex items-center"
+              >
+                <Logo priority className="h-10 transition-transform duration-300 group-hover:scale-[1.04]" />
               </Link>
-              <span className="px-2.5 py-1 bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)] text-[10px] font-bold rounded-md uppercase tracking-wider">
-                Admin Panel
-              </span>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2.5 px-3 py-1.5 bg-[var(--color-bg-tertiary)] rounded-xl">
-                <div className="w-7 h-7 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-full flex items-center justify-center">
+                <div className="w-7 h-7 bg-gradient-brand rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">
                     {user?.name?.charAt(0).toUpperCase()}
                   </span>
@@ -78,7 +75,7 @@ export default function AdminLayout({ children }) {
                       href={item.href}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 ${
                         active
-                          ? 'bg-[var(--color-brand-primary)] text-white shadow-md shadow-orange-500/20'
+                          ? 'bg-[var(--color-brand-primary)] text-white shadow-md shadow-[var(--shadow-brand-sm)]'
                           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-brand-accent)]'
                       }`}
                     >

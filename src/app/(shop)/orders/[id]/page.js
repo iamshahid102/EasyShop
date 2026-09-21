@@ -4,13 +4,11 @@ import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice, formatDate } from "@/lib/utils/helpers";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { LoadingPage } from "@/components/ui/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   FaHourglass,
   FaCog,
@@ -103,7 +101,12 @@ export default function OrderDetailPage({ params }) {
   };
 
   if (authLoading || loading) {
-    return <LoadingPage />;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 min-h-[60vh]">
+        <LoadingSpinner size="xl" />
+        <p className="text-[var(--color-text-secondary)] mt-4 font-medium">Loading order...</p>
+      </div>
+    );
   }
 
   if (!order) {
@@ -114,14 +117,11 @@ export default function OrderDetailPage({ params }) {
   const statusBadge = getStatusBadge(order.status);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Page Header */}
-        <div className="relative bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] text-white overflow-hidden">
+        <div className="relative bg-gradient-dark text-white overflow-hidden">
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-orange-500 rounded-full blur-3xl" />
+            <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-[var(--color-brand-primary)] rounded-full blur-3xl" />
           </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
             <Link
@@ -145,10 +145,10 @@ export default function OrderDetailPage({ params }) {
             </Link>
             <div className="flex flex-wrap items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <h1 className="text-lg sm:text-xl lg:text-2xl text-white/80 font-bold mb-1 sm:mb-2">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl text-white font-bold mb-1 sm:mb-2">
                   Order Confirmation
                 </h1>
-                <p className="text-sm sm:text-base text-white/70">
+                <p className="text-sm sm:text-base text-white/75">
                   Order #{order.orderNumber}
                 </p>
               </div>
@@ -384,7 +384,7 @@ export default function OrderDetailPage({ params }) {
               {/* Shipping Address */}
               <div className="bg-[var(--color-bg-card)] rounded-2xl shadow-sm border border-[var(--color-border)] p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                  <div className="w-10 h-10 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[var(--shadow-brand-sm)]">
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -552,7 +552,7 @@ export default function OrderDetailPage({ params }) {
 
           {/* Help Section */}
           <div className="mt-6 sm:mt-8 bg-gradient-to-br from-[var(--color-bg-secondary)] to-white border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 text-center">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/20">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-brand rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[var(--shadow-brand-sm)]">
               <svg
                 className="w-6 h-6 sm:w-7 sm:h-7 text-white"
                 fill="none"
@@ -610,9 +610,6 @@ export default function OrderDetailPage({ params }) {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

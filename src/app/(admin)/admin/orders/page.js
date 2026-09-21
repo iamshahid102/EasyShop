@@ -181,35 +181,35 @@ export default function AdminOrdersPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-[var(--color-brand-accent)]">Orders Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Orders Management</h1>
           <p className="text-[var(--color-text-secondary)] mt-1">View and manage all customer orders</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">All Orders</div>
             <div className="text-3xl font-bold mt-2">{orders.length}</div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Pending</div>
             <div className="text-3xl font-bold mt-2 text-yellow-600">
               {orders.filter((o) => o.status === 'pending').length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Processing</div>
             <div className="text-3xl font-bold mt-2 text-blue-600">
               {orders.filter((o) => o.status === 'processing').length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Shipped</div>
             <div className="text-3xl font-bold mt-2 text-purple-600">
               {orders.filter((o) => o.status === 'shipped').length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
             <div className="text-[var(--color-text-secondary)] text-sm font-medium">Delivered</div>
             <div className="text-3xl font-bold mt-2 text-green-600">
               {orders.filter((o) => o.status === 'delivered').length}
@@ -218,7 +218,7 @@ export default function AdminOrdersPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-4 rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white p-4 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
@@ -252,9 +252,9 @@ export default function AdminOrdersPage() {
         </div>
 
         {/* Orders Table */}
-        <div className="bg-white rounded-lg shadow-md border border-[var(--color-border)] overflow-hidden">
+        <div className="bg-white rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] overflow-hidden">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
+            <div className="flex justify-center items-center py-14">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-brand-primary)]"></div>
             </div>
           ) : orders.length > 0 ? (
@@ -347,7 +347,7 @@ export default function AdminOrdersPage() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-20">
+            <div className="text-center py-14">
               <p className="text-xl text-[var(--color-text-secondary)]">No orders found</p>
             </div>
           )}

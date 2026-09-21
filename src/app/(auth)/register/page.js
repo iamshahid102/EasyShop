@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
+import Logo from '@/components/layout/Logo';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaCheckCircle, FaShieldAlt, FaBolt, FaStar } from 'react-icons/fa';
 
 export default function RegisterPage() {
@@ -111,13 +112,8 @@ export default function RegisterPage() {
         <div className="w-full max-w-md mx-auto">
           {/* Logo & Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <Link href="/" className="inline-flex items-center justify-center gap-2.5 mb-6 group">
-              <div className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:shadow-xl group-hover:shadow-orange-500/30 group-hover:scale-105 transition-all duration-300">
-                <span className="text-white font-extrabold text-2xl">E</span>
-              </div>
-              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--color-brand-accent)]">
-                EasyShop
-              </span>
+            <Link href="/" aria-label="EasyShop — Home" className="inline-flex justify-center mb-6 group">
+              <Logo className="h-16 sm:h-20 transition-transform duration-300 group-hover:scale-[1.04]" />
             </Link>
 
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--color-brand-accent)] mb-2 tracking-tight">
@@ -332,11 +328,11 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Side - Premium Branding Panel */}
-      <div className="hidden lg:flex lg:flex-1 relative bg-gradient-to-br from-[var(--color-brand-primary)] via-orange-700 to-[var(--color-brand-accent)] overflow-hidden">
+      <div className="hidden lg:flex lg:flex-1 relative bg-gradient-to-br from-[var(--color-brand-primary)] via-[var(--color-brand-700)] to-[var(--color-brand-accent)] overflow-hidden">
         {/* Decorative Orbs */}
         <div className="absolute inset-0">
           <div className="absolute -top-1/4 -right-1/4 w-[60%] h-[60%] bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/4 -left-1/4 w-[50%] h-[50%] bg-gradient-to-tr from-orange-400/20 to-transparent rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/4 -left-1/4 w-[50%] h-[50%] bg-gradient-to-tr from-[var(--color-brand-400)]/20 to-transparent rounded-full blur-3xl" />
           <div className="absolute top-1/3 left-1/4 w-1.5 h-1.5 bg-white/30 rounded-full animate-pulse" />
           <div className="absolute top-1/4 right-1/3 w-2.5 h-2.5 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
           <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />

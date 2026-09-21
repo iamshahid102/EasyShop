@@ -186,7 +186,7 @@ export default function EditProductPage() {
   if (loading) {
     return (
       
-        <div className="flex justify-center items-center py-20">
+        <div className="flex justify-center items-center py-14">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
         </div>
       
@@ -196,12 +196,12 @@ export default function EditProductPage() {
   return (
     
       <div className="max-w-3xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-black">Edit Product</h1>
-          <p className="text-zinc-600 mt-1">Update product information</p>
+        <div className="mb-5">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Edit Product</h1>
+          <p className="text-[var(--color-text-secondary)] mt-1">Update product information</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-[var(--color-bg-card)] rounded-2xl shadow-[var(--shadow-sm)] border border-[var(--color-border)] p-6 space-y-6">
           {errors.general && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {errors.general}

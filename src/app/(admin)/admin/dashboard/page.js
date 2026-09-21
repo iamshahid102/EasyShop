@@ -96,7 +96,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       
-        <div className="flex justify-center items-center py-20">
+        <div className="flex justify-center items-center py-14">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-brand-primary)]"></div>
         </div>
       
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         {/* Welcome Header */}
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-brand-accent)]">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Dashboard</h1>
           <p className="text-[var(--color-text-secondary)] mt-1">Welcome back, {user.name}! Here&apos;s your store overview.</p>
         </div>
 

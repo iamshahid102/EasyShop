@@ -9,13 +9,6 @@ export class ApiError extends Error {
 }
 
 export const errorHandler = (error) => {
-  // Log error to console for debugging
-  console.error('[ERROR] API Error:', {
-    message: error.message,
-    name: error.name,
-    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-  });
-
   let statusCode = error.statusCode || 500;
   let message = error.message || 'Internal Server Error';
 
@@ -55,6 +48,26 @@ export const errorHandler = (error) => {
     const zodErrors = error.errors?.map(e => e.message) || [];
     message = zodErrors.length > 0 ? zodErrors.join(', ') : 'Validation failed';
     statusCode = 400;
+  }
+
+  // Malformed JSON body — req.json() throws a SyntaxError.
+  // Without this the client gets a misleading 500 instead of a 400.
+  if (error instanceof SyntaxError && !error.statusCode) {
+    message = 'Invalid JSON in request body';
+    statusCode = 400;
+  }
+
+  // Log only once the status is resolved, and keep the noise proportional.
+  // Expected 4xx (401 for a missing/expired token, bad login, ...) is normal
+  // traffic — dumping a full stack trace for those floods production logs.
+  if (statusCode >= 500) {
+    console.error('[ERROR] API Error:', {
+      message: error.message,
+      name: error.name,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+    });
+  } else if (process.env.NODE_ENV === 'development') {
+    console.warn(`[WARN] API ${statusCode}: ${message}`);
   }
 
   return {

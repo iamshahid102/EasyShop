@@ -18,12 +18,12 @@ export default function Card({
 
   return (
     <div
-      className={cn(`
-        bg-[var(--color-bg-card)] rounded-2xl border border-[var(--color-border)]
-        ${paddings[padding]}
-        ${hover ? 'hover:border-[var(--color-brand-primary)] hover:shadow-lg transition-all duration-300' : ''}
-        ${className}
-      `)}
+      className={cn(
+        'bg-[var(--color-bg-card)] rounded-[var(--radius-xl)] border border-[var(--color-border)] shadow-[var(--shadow-sm)]',
+        paddings[padding],
+        hover && 'card-hover hover:border-[var(--color-brand-200)]',
+        className
+      )}
       {...props}
     >
       {children}
@@ -33,7 +33,7 @@ export default function Card({
 
 export function CardHeader({ children, className = '' }) {
   return (
-    <div className={`mb-4 pb-4 border-b border-[var(--color-border)] ${className}`}>
+    <div className={cn('mb-4 pb-4 border-b border-[var(--color-border)]', className)}>
       {children}
     </div>
   );
@@ -41,7 +41,7 @@ export function CardHeader({ children, className = '' }) {
 
 export function CardTitle({ children, className = '' }) {
   return (
-    <h3 className={`text-xl font-bold text-[var(--color-brand-accent)] ${className}`}>
+    <h3 className={cn('text-xl font-bold tracking-tight text-[var(--color-brand-accent)]', className)}>
       {children}
     </h3>
   );
@@ -53,7 +53,7 @@ export function CardContent({ children, className = '' }) {
 
 export function CardFooter({ children, className = '' }) {
   return (
-    <div className={`mt-6 pt-4 border-t border-[var(--color-border)] ${className}`}>
+    <div className={cn('mt-6 pt-4 border-t border-[var(--color-border)]', className)}>
       {children}
     </div>
   );

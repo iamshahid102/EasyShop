@@ -3,8 +3,6 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import Button from '@/components/ui/Button';
 import { FaCheck, FaDollarSign, FaShippingFast, FaShieldAlt, FaArrowRight, FaStar, FaTruck, FaBox } from 'react-icons/fa';
 
@@ -57,60 +55,46 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* ===== Hero Section — Premium Rosaline-Inspired ===== */}
-        <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] text-white overflow-hidden">
-          {/* Decorative Gradient Orbs */}
-          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-gradient-to-br from-[var(--color-brand-primary)]/20 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-orange-500/10 to-transparent rounded-full blur-3xl" />
-          <div className="absolute top-1/3 left-1/4 w-2 h-2 bg-white/30 rounded-full" />
-          <div className="absolute top-1/4 right-1/3 w-3 h-3 bg-orange-400/40 rounded-full" />
-          <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-white/20 rounded-full" />
+        <section className="relative min-h-[80vh] flex items-center bg-gradient-dark text-white overflow-hidden">
+          {/* Backdrop: fading grid + soft brand glow */}
+          <div className="pointer-events-none absolute inset-0 bg-grid-fade" />
+          <div className="pointer-events-none absolute top-[-25%] right-[-12%] w-[62%] h-[62%] bg-gradient-to-br from-[var(--color-brand-primary)]/25 to-transparent rounded-full blur-3xl" />
+          <div className="pointer-events-none absolute bottom-[-15%] left-[-12%] w-[52%] h-[52%] bg-gradient-to-tr from-[var(--color-brand-primary)]/15 to-transparent rounded-full blur-3xl" />
 
-          <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
               {/* Left Content */}
               <div className="text-center lg:text-left z-10" data-animate="slide-left">
-                {/* Pill Badge */}
-                <div className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full mb-7 border border-white/20 shadow-lg">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
-                  </span>
-                  <span className="text-sm font-medium tracking-wide">New Arrivals Every Week</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-6 leading-[1.05] tracking-tight text-white/80">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-5 leading-[1.08] tracking-tight text-white">
                   Discover Your
-                  <span className="block mt-2 bg-gradient-to-r from-[var(--color-brand-primary-light)] via-orange-300 to-yellow-200 bg-clip-text text-transparent">
+                  <span className="block mt-2 bg-gradient-to-r from-[var(--color-brand-300)] via-[var(--color-brand-400)] to-[var(--color-brand-primary)] bg-clip-text text-transparent">
                     Perfect Style
                   </span>
                 </h1>
 
-                <p className="text-base sm:text-lg text-white/80 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                <p className="text-base text-white/80 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
                   Shop the latest trends with unbeatable prices. Quality products, fast shipping,
                   and exceptional service guaranteed for every purchase.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-                  <Link href="/products">
-                    <Button size="xl" className="!bg-white !text-[var(--color-brand-accent)] !hover:bg-gray-100 shadow-2xl !hover:shadow-white/25 hover:scale-[1.03] transition-all duration-300 font-bold text-base px-10 py-4 rounded-xl group">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
+                  <Link href="/products" className="w-full sm:w-auto">
+                    <Button size="xl" variant="light" className="w-full px-10">
                       <span>Shop Now</span>
-                      <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <FaArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Link href="/about">
-                    <Button size="xl" variant="outline" className="!border-2 !border-white/40 !text-white !hover:bg-white/10 !hover:border-white/60 shadow-lg !hover:scale-[1.03] transition-all duration-300 font-medium text-base px-10 py-4 rounded-xl">
+                  <Link href="/about" className="w-full sm:w-auto">
+                    <Button size="xl" variant="onDark" className="w-full px-10">
                       Learn More
                     </Button>
                   </Link>
                 </div>
 
                 {/* Stats Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/15">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 border-t border-white/15">
                   {stats.map((stat, index) => (
                     <div key={index} className="text-center sm:text-left">
                       <div className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
@@ -124,39 +108,37 @@ export default function Home() {
 
               {/* Right Visual - Premium Hero Image */}
               <div className="relative z-10" data-animate="slide-right">
-                <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl shadow-orange-500/10">
+                <div className="relative w-full aspect-[4/5] rounded-[var(--radius-2xl)] overflow-hidden ring-1 ring-white/10 shadow-[0_50px_90px_-30px_rgba(0,0,0,0.75)]">
                   <Image
                     src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=1000&fit=crop"
                     alt="Premium Shopping Collection"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 45vw"
                     className="object-cover"
                     priority
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-accent)] via-[var(--color-brand-accent)]/20 to-transparent" />
 
-                  {/* Floating Offer Card */}
-                  <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-md text-gray-900 px-5 py-4 rounded-xl shadow-2xl animate-float">
-                    <div className="text-2xl font-extrabold text-[var(--color-brand-primary)]">50% OFF</div>
-                    <div className="text-xs font-medium text-gray-500 mt-0.5">First Order</div>
+                  {/* Offer chip */}
+                  <div className="absolute top-5 right-5 rounded-[var(--radius-lg)] bg-white px-4 py-3 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)] animate-float">
+                    <div className="text-xl font-extrabold leading-none text-[var(--color-brand-primary)]">50% OFF</div>
+                    <div className="text-[11px] font-medium text-[var(--color-text-tertiary)] mt-1">First order</div>
                   </div>
 
-                  {/* Bottom Feature Card */}
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-2xl">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
-                          <FaStar className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-bold text-gray-900 truncate">Premium Products</div>
-                          <div className="text-xs text-gray-500">Free Shipping Available</div>
-                        </div>
-                        <div className="flex -space-x-1.5">
-                          {[1, 2, 3].map((i) => (
-                            <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 border-2 border-white" />
-                          ))}
-                        </div>
+                  {/* Bottom info bar */}
+                  <div className="absolute inset-x-5 bottom-5">
+                    <div className="ring-hairline-light flex items-center gap-3 rounded-[var(--radius-lg)] border border-white/12 bg-white/10 p-3.5 backdrop-blur-xl">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-gradient-brand shadow-[var(--shadow-brand-sm)]">
+                        <FaStar className="h-5 w-5 text-white" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-bold text-white">Premium Products</div>
+                        <div className="text-xs text-white/55">Free shipping available</div>
+                      </div>
+                      <div className="flex items-center gap-1 rounded-full bg-white/12 px-2.5 py-1">
+                        <FaStar className="h-3 w-3 text-[var(--color-rating-filled)]" />
+                        <span className="text-xs font-bold text-white">4.9</span>
                       </div>
                     </div>
                   </div>
@@ -167,31 +149,28 @@ export default function Home() {
         </section>
 
         {/* ===== Features Section ===== */}
-        <section className="py-16 sm:py-20 lg:py-24 bg-[var(--color-bg-primary)]" data-animate="fade">
+        <section className="py-10 sm:py-12 lg:py-16 bg-[var(--color-bg-primary)]" data-animate="fade">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16">
-              <span className="inline-block px-4 py-1.5 bg-[var(--color-bg-tertiary)] text-[var(--color-brand-primary)] text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-                Why Choose Us
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-brand-accent)] mb-4">
+            <div className="text-center mb-8 lg:mb-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-brand-accent)] mb-3">
                 Premium Shopping Experience
               </h2>
-              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              <p className="text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
                 We&apos;re committed to providing you with the best shopping experience
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="group relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 lg:p-8 hover:border-[var(--color-brand-primary)]/30 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-500"
+                  className="group relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 lg:p-6 hover:border-[var(--color-brand-primary)]/30 hover:shadow-xl hover:shadow-[var(--shadow-brand-sm)] transition-all duration-500"
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <div className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-2xl flex items-center justify-center text-white mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-orange-500/20">
+                  <div className="w-12 h-12 bg-gradient-brand rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-[var(--shadow-brand-sm)]">
                     {feature.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-[var(--color-brand-accent)] mb-3">
+                  <h3 className="text-base font-bold text-[var(--color-brand-accent)] mb-2">
                     {feature.title}
                   </h3>
                   <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
@@ -204,16 +183,13 @@ export default function Home() {
         </section>
 
         {/* ===== Categories Section ===== */}
-        <section className="py-16 sm:py-20 lg:py-24 bg-[var(--color-bg-secondary)]" data-animate="fade">
+        <section className="py-10 sm:py-12 lg:py-16 bg-[var(--color-bg-secondary)]" data-animate="fade">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16">
-              <span className="inline-block px-4 py-1.5 bg-[var(--color-bg-tertiary)] text-[var(--color-brand-primary)] text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-                Collections
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-brand-accent)] mb-4">
+            <div className="text-center mb-8 lg:mb-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-brand-accent)] mb-3">
                 Shop by Category
               </h2>
-              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              <p className="text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
                 Explore our wide range of premium products
               </p>
             </div>
@@ -256,9 +232,9 @@ export default function Home() {
         </section>
 
         {/* ===== Services Banner ===== */}
-        <section className="py-12 sm:py-16 bg-[var(--color-bg-primary)] border-y border-[var(--color-border)]" data-animate="fade">
+        <section className="py-8 sm:py-10 bg-[var(--color-bg-primary)] border-y border-[var(--color-border)]" data-animate="fade">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
               {[
                 { icon: FaTruck, title: 'Free Shipping', desc: 'On orders over Rs. 1,500' },
                 { icon: FaShieldAlt, title: 'Secure Payment', desc: '100% secure transactions' },
@@ -278,7 +254,7 @@ export default function Home() {
         </section>
 
         {/* ===== CTA Section ===== */}
-        <section className="relative py-20 sm:py-24 lg:py-28 bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] text-white overflow-hidden" data-animate="fade">
+        <section className="relative py-12 sm:py-16 lg:py-20 bg-gradient-brand gradient-animate text-white overflow-hidden" data-animate="fade">
           {/* Decorative Elements */}
           <div className="absolute inset-0">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
@@ -286,10 +262,10 @@ export default function Home() {
           </div>
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5 leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-4 leading-tight">
               Ready to Start Shopping?
             </h2>
-            <p className="text-base sm:text-lg text-white/80 mb-8 lg:mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base text-white/85 mb-6 lg:mb-8 leading-relaxed max-w-2xl mx-auto">
               Join thousands of satisfied customers. Get exclusive access to new arrivals,
               special promotions, and member-only deals.
             </p>
@@ -308,9 +284,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

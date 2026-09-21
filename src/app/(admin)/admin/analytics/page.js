@@ -167,7 +167,7 @@ export default function AdminAnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20">
+      <div className="flex justify-center items-center py-14">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-brand-primary)]"></div>
       </div>
     );
@@ -178,7 +178,7 @@ export default function AdminAnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--color-brand-accent)]">Analytics & Reports</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Analytics & Reports</h1>
           <p className="text-[var(--color-text-secondary)] mt-1">Insights and performance metrics for your store</p>
         </div>
         <select
@@ -220,7 +220,7 @@ export default function AdminAnalyticsPage() {
           <div className="text-sm mt-2 opacity-75">↗ +5.1% from last month</div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-lg shadow-lg">
+        <div className="bg-gradient-brand text-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-brand)]">
           <div className="text-sm font-medium opacity-90">Total Products</div>
           <div className="text-3xl font-bold mt-2">{analytics.overview.totalProducts}</div>
           <div className="text-sm mt-2 opacity-75">→ No change</div>
@@ -236,7 +236,7 @@ export default function AdminAnalyticsPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <h2 className="text-xl font-bold mb-4">Revenue Trend (Last 6 Months)</h2>
           <div className="h-64 flex items-end justify-around gap-2">
             {analytics.revenueByMonth.map((data, index) => {
@@ -263,7 +263,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Orders by Status */}
-        <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <h2 className="text-xl font-bold mb-4">Orders by Status</h2>
           <div className="space-y-4">
             {analytics.ordersByStatus.map((status, index) => {
@@ -299,7 +299,7 @@ export default function AdminAnalyticsPage() {
       {/* Tables Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Products */}
-        <div className="bg-white rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <div className="p-6 border-b border-[var(--color-border)]">
             <h2 className="text-xl font-bold">Top Selling Products</h2>
           </div>
@@ -324,7 +324,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Top Categories */}
-        <div className="bg-white rounded-lg shadow-md border border-[var(--color-border)]">
+        <div className="bg-white rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
           <div className="p-6 border-b border-[var(--color-border)]">
             <h2 className="text-xl font-bold">Top Categories</h2>
           </div>
@@ -352,7 +352,7 @@ export default function AdminAnalyticsPage() {
       </div>
 
       {/* Export Options */}
-      <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)]">
+      <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
         <h2 className="text-xl font-bold mb-4">Export Reports</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <button className="flex flex-col items-center gap-2 p-4 border-2 border-zinc-200 rounded-lg hover:border-[var(--color-brand-primary)] hover:bg-[var(--color-bg-tertiary)] transition-colors">

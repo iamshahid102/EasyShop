@@ -211,8 +211,8 @@ export default function AddProductPage() {
               </Button>
             </Link>
           </div>
-          <h1 className="text-4xl font-bold text-[var(--color-base-accent-2)]">Add New Product</h1>
-          <p className="text-[var(--color-base-text)] mt-2 text-lg">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Add New Product</h1>
+          <p className="text-[var(--color-text-secondary)] mt-1 text-sm">
             Create a new product in your catalog
           </p>
         </div>

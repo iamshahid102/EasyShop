@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/jwt';
+import { verifyTokenEdge } from '@/lib/auth/jwtEdge';
 
 // Routes that require authentication
 const protectedRoutes = [
@@ -33,16 +33,16 @@ export async function middleware(request) {
   let user = null;
   let isAuthenticated = false;
 
-  // Verify token if exists
+  // Verify token if exists.
+  // NOTE: uses the Edge-safe verifier because `jsonwebtoken` (used by the
+  // Node.js API routes) is not available in the middleware Edge runtime.
   if (token) {
     try {
-      const decoded = verifyToken(token);
+      const decoded = await verifyTokenEdge(token, process.env.JWT_SECRET);
       user = decoded;
       isAuthenticated = true;
     } catch (error) {
-      // Token invalid or expired - clear it
-      const response = NextResponse.next();
-      response.cookies.delete('token');
+      // Token invalid or expired - treat as unauthenticated
       isAuthenticated = false;
     }
   }

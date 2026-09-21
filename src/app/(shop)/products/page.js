@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/products/ProductCard';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -74,27 +72,24 @@ export default function ProductsPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Page Header */}
-        <div className="relative bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] text-white overflow-hidden">
+        <div className="relative bg-gradient-dark text-white overflow-hidden">
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-orange-500 rounded-full blur-3xl" />
+            <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[var(--color-brand-primary)] rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-white rounded-full blur-3xl" />
           </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white/70 font-extrabold mb-3 tracking-tight">Shop All Products</h1>
-            <p className="text-sm sm:text-base text-white/70 max-w-xl">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold mb-2 tracking-tight">Shop All Products</h1>
+            <p className="text-sm sm:text-base text-white/75 max-w-xl">
               Discover amazing products at unbeatable prices
             </p>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
           {/* Filters Section */}
-          <div className="bg-[var(--color-bg-card)] rounded-2xl shadow-md border border-[var(--color-border)] p-5 sm:p-6 lg:p-8 mb-8 lg:mb-10">
+          <div className="bg-[var(--color-bg-card)] rounded-2xl shadow-[var(--shadow-sm)] border border-[var(--color-border)] p-5 sm:p-6 lg:p-7 mb-6 lg:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4">
               <h3 className="text-base sm:text-lg font-bold text-[var(--color-brand-accent)]">
                 Filter & Search
@@ -236,13 +231,13 @@ export default function ProductsPage() {
 
           {/* Products Grid */}
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-12 sm:py-16 lg:py-20">
+            <div className="flex flex-col items-center justify-center py-10 sm:py-12 lg:py-16">
               <LoadingSpinner size="xl" />
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-4 font-medium">Loading products...</p>
             </div>
           ) : products.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-5 lg:gap-6 mb-6 sm:mb-8 lg:mb-10">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
@@ -323,9 +318,9 @@ export default function ProductsPage() {
                 </div>
               )}
             </>            ) : (
-            <div className="text-center py-20">
-              <div className="w-24 h-24 mx-auto mb-6 bg-[var(--color-bg-tertiary)] rounded-full flex items-center justify-center">
-                <svg className="w-12 h-12 text-[var(--color-text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-14">
+              <div className="w-20 h-20 mx-auto mb-5 bg-[var(--color-bg-tertiary)] rounded-full flex items-center justify-center">
+                <svg className="w-10 h-10 text-[var(--color-text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                 </svg>
               </div>
@@ -348,9 +343,6 @@ export default function ProductsPage() {
             </div>
           )}
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

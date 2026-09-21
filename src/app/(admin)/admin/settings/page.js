@@ -30,43 +30,43 @@ export default function AdminSettingsPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-[var(--color-brand-accent)]">Settings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)]">Settings</h1>
           <p className="text-[var(--color-text-secondary)] mt-1">Manage your store settings and configurations</p>
         </div>
 
         {/* Settings Sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaStore /></div>
             <h3 className="text-lg font-bold mb-2">Store Information</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Update store name, logo, and contact details</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaCreditCard /></div>
             <h3 className="text-lg font-bold mb-2">Payment Methods</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Configure payment gateways and options</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaTruck /></div>
             <h3 className="text-lg font-bold mb-2">Shipping Settings</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Manage shipping zones and rates</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaEnvelope /></div>
             <h3 className="text-lg font-bold mb-2">Email Templates</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Customize order confirmation and notification emails</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaLock /></div>
             <h3 className="text-lg font-bold mb-2">Security</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Two-factor authentication and security settings</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white p-6 rounded-[var(--radius-xl)] shadow-[var(--shadow-sm)] border border-[var(--color-border)] hover:shadow-lg transition-shadow cursor-pointer">
             <div className="text-4xl mb-4 flex items-center justify-center"><FaGlobe /></div>
             <h3 className="text-lg font-bold mb-2">Integrations</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Connect third-party services and APIs</p>

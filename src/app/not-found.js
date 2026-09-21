@@ -10,10 +10,7 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)] px-4">
       <div className="max-w-md w-full text-center">
         <div className="mb-8">
-          <span className="inline-block px-4 py-1.5 bg-[var(--color-bg-tertiary)] text-[var(--color-brand-primary)] text-xs font-bold rounded-full uppercase tracking-wider mb-6">
-            Error 404
-          </span>
-          <h1 className="text-8xl sm:text-9xl font-extrabold text-[var(--color-brand-primary)] mb-4 tracking-tight">
+          <h1 className="text-7xl sm:text-8xl font-extrabold text-[var(--color-brand-primary)] mb-4 tracking-tight">
             404
           </h1>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-brand-accent)] mb-3">
@@ -45,7 +42,7 @@ export default function NotFound() {
             Browse Products
           </Link>
         </div>
-        <div className="mt-12 pt-8 border-t border-[var(--color-border)]">
+        <div className="mt-10 pt-6 border-t border-[var(--color-border)]">
           <p className="text-sm text-[var(--color-text-tertiary)] mb-4">Popular Pages</p>
           <div className="flex flex-wrap justify-center gap-3">
             {['Products', 'Cart', 'Orders', 'Login'].map((page) => (

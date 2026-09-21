@@ -114,7 +114,7 @@ export default function ImageUploader({ onImagesSelected, folder = 'products', m
           htmlFor="image-upload"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className="block w-full px-6 py-10 border-2 border-dashed rounded-xl text-center cursor-pointer transition-all border-[var(--color-border)] hover:border-[var(--color-brand-primary)] hover:bg-orange-50"
+          className="block w-full px-6 py-10 border-2 border-dashed rounded-xl text-center cursor-pointer transition-all border-[var(--color-border)] hover:border-[var(--color-brand-primary)] hover:bg-[var(--color-brand-50)]"
         >
           <div className="flex flex-col items-center gap-3">                <div className="w-16 h-16 bg-[var(--color-bg-tertiary)] rounded-full flex items-center justify-center">
               <svg

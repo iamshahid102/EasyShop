@@ -4,13 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice, formatDate } from "@/lib/utils/helpers";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { LoadingPage } from "@/components/ui/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { FaHourglass, FaCog, FaTruck, FaCheckCircle, FaTimesCircle, FaBox } from "react-icons/fa";
 
 export default function OrdersPage() {
@@ -80,31 +78,33 @@ export default function OrdersPage() {
   };
 
   if (authLoading || loading) {
-    return <LoadingPage />;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 min-h-[60vh]">
+        <LoadingSpinner size="xl" />
+        <p className="text-[var(--color-text-secondary)] mt-4 font-medium">Loading your orders...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Page Header */}
-        <div className="relative bg-gradient-to-br from-[var(--color-brand-accent)] via-[#2a2a2a] to-[var(--color-brand-primary-dark)] text-white overflow-hidden">
+        <div className="relative bg-gradient-dark text-white overflow-hidden">
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-orange-500 rounded-full blur-3xl" />
+            <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[var(--color-brand-primary)] rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-white rounded-full blur-3xl" />
           </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 lg:py-16">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl text-white/80 font-extrabold mb-2">My Orders</h1>
-            <p className="text-sm sm:text-base text-white/70">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold mb-2">My Orders</h1>
+            <p className="text-sm sm:text-base text-white/75">
               Track and manage all your orders
             </p>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
           {orders.length === 0 ? (
-            <div className="text-center py-16 sm:py-20 bg-[var(--color-bg-card)] rounded-2xl shadow-sm border border-[var(--color-border)]">
+            <div className="text-center py-12 sm:py-14 bg-[var(--color-bg-card)] rounded-2xl shadow-[var(--shadow-sm)] border border-[var(--color-border)]">
               <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-5 bg-[var(--color-bg-tertiary)] rounded-full flex items-center justify-center">
                 <svg className="w-12 h-12 sm:w-14 sm:h-14 text-[var(--color-text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -139,7 +139,7 @@ export default function OrdersPage() {
                       onClick={() => setFilter(tab.key)}
                       className={`flex-1 min-w-[100px] px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
                         filter === tab.key
-                          ? "bg-[var(--color-brand-primary)] text-white shadow-md shadow-orange-500/20"
+                          ? "bg-[var(--color-brand-primary)] text-white shadow-md shadow-[var(--shadow-brand-sm)]"
                           : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)]"
                       }`}
                     >
@@ -168,7 +168,7 @@ export default function OrdersPage() {
                       <div className="bg-[var(--color-bg-secondary)] px-6 py-4 border-b border-[var(--color-border)]">
                         <div className="flex flex-wrap items-center justify-between gap-4">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                            <div className="w-12 h-12 bg-gradient-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-[var(--shadow-brand-sm)]">
                               <statusBadge.icon className="w-6 h-6" />
                             </div>
                             <div>
@@ -279,9 +279,6 @@ export default function OrdersPage() {
             </>
           )}
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

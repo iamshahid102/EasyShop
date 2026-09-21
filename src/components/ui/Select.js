@@ -12,31 +12,35 @@ export default function Select({
   ...props
 }) {
   return (
-    <div className={`flex flex-col gap-2 ${containerClassName}`}>
+    <div className={cn('flex flex-col gap-1.5', containerClassName)}>
       {label && (
         <label
           htmlFor={props.id}
-          className="text-sm font-semibold text-[var(--color-brand-accent)]"
+          className="text-sm font-semibold text-[var(--color-text-primary)]"
         >
           {label}
-          {props.required && <span className="text-red-500 ml-1">*</span>}
+          {props.required && <span className="text-[var(--color-error)] ml-1">*</span>}
         </label>
       )}
 
       <div className="relative">
         <select
-          className={cn(`
-            w-full px-4 py-3 pr-10
-            border rounded-xl
+          className={cn(
+            `
+            w-full px-4 py-3 pr-11
+            border rounded-[var(--radius-md)]
             text-[var(--color-text-primary)]
             bg-[var(--color-bg-primary)]
             appearance-none
-            focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/30 focus:border-[var(--color-brand-primary)]
+            shadow-[var(--shadow-xs)]
+            hover:border-[var(--color-border-dark)]
+            focus:outline-none focus:ring-4 focus:ring-[var(--color-brand-primary)]/15 focus:border-[var(--color-brand-primary)]
             transition-all duration-200
             disabled:bg-[var(--color-bg-tertiary)] disabled:cursor-not-allowed disabled:opacity-60
-            ${error ? 'border-red-500 focus:ring-red-500' : 'border-[var(--color-border)]'}
-            ${className}
-          `)}
+            ${error ? 'border-[var(--color-error)] focus:ring-[var(--color-error)]/15 focus:border-[var(--color-error)]' : 'border-[var(--color-border)]'}
+          `,
+            className
+          )}
           {...props}
         >
           {options.map((option) => (
@@ -47,9 +51,9 @@ export default function Select({
         </select>
 
         {/* Custom Arrow */}
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--color-text-tertiary)]">
           <svg
-            className="w-5 h-5 text-[var(--color-text-secondary)]"
+            className="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

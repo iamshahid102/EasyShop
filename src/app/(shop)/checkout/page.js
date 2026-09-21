@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { formatPrice } from '@/lib/utils/helpers';
@@ -12,7 +10,7 @@ import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
-import { LoadingPage } from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -107,7 +105,12 @@ export default function CheckoutPage() {
   };
 
   if (authLoading || !cart || !user) {
-    return <LoadingPage />;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 min-h-[60vh]">
+        <LoadingSpinner size="xl" />
+        <p className="text-[var(--color-text-secondary)] mt-4 font-medium">Preparing checkout...</p>
+      </div>
+    );
   }
 
   const shippingThreshold = 1500;
@@ -168,10 +171,7 @@ export default function CheckoutPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Progress Steps */}
         <div className="bg-[var(--color-bg-secondary)] border-b border-[var(--color-border)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
                 {/* Shipping Address Section */}
                 <div className="bg-[var(--color-bg-card)] rounded-2xl shadow-sm border border-[var(--color-border)] p-6 sm:p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-11 h-11 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+                    <div className="w-11 h-11 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center shadow-lg shadow-[var(--shadow-brand-sm)]">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -311,7 +311,7 @@ export default function CheckoutPage() {
                 {/* Payment Method Section */}
                 <div className="bg-[var(--color-bg-card)] rounded-2xl shadow-sm border border-[var(--color-border)] p-6 sm:p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-11 h-11 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+                    <div className="w-11 h-11 bg-[var(--color-brand-primary)] rounded-xl flex items-center justify-center shadow-lg shadow-[var(--shadow-brand-sm)]">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
@@ -332,7 +332,7 @@ export default function CheckoutPage() {
                         key={method.value}
                         className={`flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                           formData.paymentMethod === method.value
-                          ? 'border-[var(--color-brand-primary)] bg-orange-50/50'
+                          ? 'border-[var(--color-brand-primary)] bg-[var(--color-brand-50)]'
                           : 'border-[var(--color-border)] hover:border-[var(--color-brand-primary)]/50 hover:bg-[var(--color-bg-secondary)]'
                         }`}
                       >
@@ -459,7 +459,7 @@ export default function CheckoutPage() {
                     <span>30-day money-back guarantee</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-                    <svg className="w-5 h-5 text-orange-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-[var(--color-brand-primary)] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span>Free & easy returns</span>
@@ -469,9 +469,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

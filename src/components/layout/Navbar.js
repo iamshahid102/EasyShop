@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import Button from '@/components/ui/Button';
+import Logo from '@/components/layout/Logo';
 import { FaBars, FaTimes, FaShoppingBag, FaUser, FaSearch } from 'react-icons/fa';
 
 export default function Navbar() {
@@ -81,20 +82,18 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-xl shadow-md'
-            : 'bg-white/95 backdrop-blur-xl shadow-sm'
+            ? 'bg-white/80 backdrop-blur-xl shadow-[var(--shadow-md)] border-b border-[var(--color-border)]'
+            : 'bg-white/70 backdrop-blur-xl shadow-[var(--shadow-sm)]'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-[72px] lg:h-[80px]">
+          <div className="flex items-center justify-between h-20 lg:h-[88px]">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] shadow-lg shadow-orange-500/20">
-                <span className="text-white font-extrabold text-lg">E</span>
-              </div>
-              <span className="text-xl font-extrabold tracking-tight text-[var(--color-brand-accent)]">
-                EasyShop
-              </span>
+            <Link href="/" aria-label="EasyShop — Home" className="group flex items-center flex-shrink-0">
+              <Logo
+                priority
+                className="h-[54px] lg:h-[62px] transition-transform duration-300 group-hover:scale-[1.04]"
+              />
             </Link>
 
             {/* Desktop Navigation - Center */}
@@ -106,10 +105,10 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                    className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
                       isActive
-                        ? 'text-[var(--color-brand-primary)] bg-[var(--color-bg-tertiary)]'
-                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-tertiary)]'
+                        ? 'text-[var(--color-brand-700)] bg-[var(--color-brand-50)]'
+                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-50)]'
                     }`}
                   >
                     {link.label}
@@ -121,14 +120,9 @@ export default function Navbar() {
               {user?.role === 'admin' && (
                 <Link
                   href="/admin/dashboard"
-                  className="px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-tertiary)] transition-all duration-300"
+                  className="px-5 py-2.5 rounded-full text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-50)] transition-all duration-300"
                 >
-                  <span className="flex items-center gap-2">
-                    Admin
-                    <span className="px-2 py-0.5 bg-[var(--color-brand-primary)] text-white text-[9px] font-bold rounded-md uppercase tracking-wider">
-                      Panel
-                    </span>
-                  </span>
+                  Admin
                 </Link>
               )}
             </div>
@@ -152,7 +146,7 @@ export default function Navbar() {
                 >
                   <FaShoppingBag className="w-4 h-4" />
                   {cartItemsCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 bg-[var(--color-brand-primary)] text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-orange-500/30">
+                    <span className="absolute -top-0.5 -right-0.5 bg-[var(--color-brand-primary)] text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-[var(--shadow-brand)]">
                       {cartItemsCount > 9 ? '9+' : cartItemsCount}
                     </span>
                   )}
@@ -163,7 +157,7 @@ export default function Navbar() {
               {user ? (
                 <div className="hidden md:flex items-center gap-3 ml-2">
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[var(--color-bg-tertiary)]">
-                    <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-full flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 bg-gradient-brand rounded-full flex items-center justify-center shadow-md">
                       <span className="text-white text-sm font-bold">
                         {user.name?.charAt(0).toUpperCase()}
                       </span>
@@ -250,17 +244,6 @@ export default function Navbar() {
               </Link>
             )}
 
-            {/* Orders link in mobile for logged-in customers */}
-            {showOrdersLink && (
-              <Link
-                href="/orders"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-3 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-tertiary)] rounded-xl transition-all"
-              >
-                My Orders
-              </Link>
-            )}
-
             {/* Admin link in mobile */}
             {user?.role === 'admin' && (
               <Link
@@ -269,7 +252,6 @@ export default function Navbar() {
                 className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-brand-primary)] hover:bg-[var(--color-bg-tertiary)] rounded-xl transition-all"
               >
                 Admin Dashboard
-                <span className="px-2 py-0.5 bg-[var(--color-brand-primary)] text-white text-[9px] font-bold rounded-md uppercase">Panel</span>
               </Link>
             )}
 
@@ -277,7 +259,7 @@ export default function Navbar() {
               {user ? (
                 <div className="px-4 space-y-2">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-brand-primary)] to-[var(--color-brand-primary-dark)] rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-brand rounded-full flex items-center justify-center">
                       <span className="text-white font-bold">{user.name?.charAt(0).toUpperCase()}</span>
                     </div>
                     <div>
@@ -313,7 +295,7 @@ export default function Navbar() {
 
       {/* Search Overlay */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[120px] px-4">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[150px] px-4">
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsSearchOpen(false)} />
           <div className="relative w-full max-w-2xl animate-fadeInUp">
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-2xl border border-[var(--color-border)] p-2 flex items-center gap-2">
@@ -339,7 +321,7 @@ export default function Navbar() {
       )}
 
       {/* Spacer for fixed navbar */}
-      <div className="h-[72px] lg:h-[80px]" />
+      <div className="h-20 lg:h-[88px]" />
     </>
   );
 }

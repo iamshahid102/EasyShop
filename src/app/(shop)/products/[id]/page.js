@@ -4,11 +4,9 @@ import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import { LoadingPage } from "@/components/ui/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
@@ -92,7 +90,12 @@ export default function ProductDetailPage({ params }) {
   };
 
   if (loading) {
-    return <LoadingPage />;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 min-h-[60vh]">
+        <LoadingSpinner size="xl" />
+        <p className="text-[var(--color-text-secondary)] mt-4 font-medium">Loading product...</p>
+      </div>
+    );
   }
 
   if (!product) {
@@ -106,10 +109,7 @@ export default function ProductDetailPage({ params }) {
     : 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      <Navbar />
-
-      <main className="flex-1">
+    <>
         {/* Breadcrumb */}
         <div className="bg-[var(--color-bg-secondary)] border-b border-[var(--color-border)]">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -450,9 +450,6 @@ export default function ProductDetailPage({ params }) {
               </div>
             )}
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

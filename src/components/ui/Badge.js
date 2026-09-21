@@ -11,13 +11,14 @@ export default function Badge({
 }) {
   const variants = {
     default: 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] border border-[var(--color-border)]',
-    primary: 'bg-[var(--color-brand-primary)] text-white',
+    primary: 'bg-gradient-brand text-white shadow-[var(--shadow-brand-sm)]',
+    soft: 'bg-[var(--color-brand-50)] text-[var(--color-brand-800)] border border-[var(--color-brand-200)]',
     secondary: 'bg-[var(--color-brand-accent)] text-white',
-    success: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-    warning: 'bg-amber-50 text-amber-700 border border-amber-200',
-    danger: 'bg-red-50 text-red-700 border border-red-200',
-    info: 'bg-blue-50 text-blue-700 border border-blue-200',
-    outline: 'bg-transparent border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)]',
+    success: 'bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/25',
+    warning: 'bg-[var(--color-warning)]/12 text-[var(--color-warning)] border border-[var(--color-warning)]/25',
+    danger: 'bg-[var(--color-error)]/10 text-[var(--color-error)] border border-[var(--color-error)]/25',
+    info: 'bg-[var(--color-info)]/10 text-[var(--color-info)] border border-[var(--color-info)]/25',
+    outline: 'bg-transparent border-2 border-[var(--color-brand-300)] text-[var(--color-brand-700)]',
   };
 
   const sizes = {
@@ -28,13 +29,12 @@ export default function Badge({
 
   return (
     <span
-        className={cn(`
-        inline-flex items-center justify-center gap-1.5
-        font-semibold rounded-full
-        ${variants[variant]}
-        ${sizes[size]}
-        ${className}
-      `)}
+      className={cn(
+        'inline-flex items-center justify-center gap-1.5 font-semibold rounded-full tracking-wide',
+        variants[variant],
+        sizes[size],
+        className
+      )}
       {...props}
     >
       {children}
