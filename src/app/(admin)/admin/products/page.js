@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/Toast';
 import { useConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -30,32 +31,9 @@ export default function AdminProductsPage() {
     pages: 0,
   });
 
-  useEffect(() => {
-    // Check if user is admin
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-
-    if (user.role !== 'admin') {
-      router.push('/');
-      return;
-    }
-
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router, filters.search, filters.category, filters.sort, pagination.page]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
-
-      if (!token) {
-        setProducts([]);
-        setLoading(false);
-        return;
-      }
 
       const params = new URLSearchParams({
         page: pagination.page,
@@ -86,14 +64,38 @@ export default function AdminProductsPage() {
           error(`Error: ${data.message}`);
         }
       }
-    } catch (err) {
-      console.error('[ERROR] Fetch products error:', err);
-      setProducts([]);
-      error('Failed to fetch products. Check console for details.');
     } finally {
       setLoading(false);
     }
+  }, [pagination.page, pagination.limit, filters.search, filters.category, filters.sort, error, router]);
+
+  const handleRefresh = () => {
+    setLoading(true);
+    fetchProducts().catch((err) => {
+      console.error('[ERROR] Fetch products error:', err);
+      setProducts([]);
+      error('Failed to fetch products. Check console for details.');
+    });
   };
+
+  useEffect(() => {
+    // Check if user is admin
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    if (user.role !== 'admin') {
+      router.push('/');
+      return;
+    }
+
+    fetchProducts().catch((err) => {
+      console.error('[ERROR] Fetch products error:', err);
+      setProducts([]);
+      error('Failed to fetch products. Check console for details.');
+    });
+  }, [user, router, fetchProducts, error]);
 
   const handleDelete = async (productId, productName) => {
     const confirmed = await confirmDialog.confirm({
@@ -123,7 +125,7 @@ export default function AdminProductsPage() {
 
       if (data.success) {
         success('Product deleted successfully!');
-        fetchProducts(); // Refresh list
+        handleRefresh(); // Refresh list
       } else {
         error(data.message || 'Failed to delete product');
       }
@@ -193,13 +195,17 @@ export default function AdminProductsPage() {
               type="text"
               placeholder="Search products..."
               value={filters.search}
-              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+              onChange={(e) => {
+                setLoading(true);
+                setFilters({ ...filters, search: e.target.value });
+              }}
               className="flex-1 px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:border-[var(--color-brand-primary)]"
             />
 
             <select
               value={filters.category}
               onChange={(e) => {
+                setLoading(true);
                 setFilters({ ...filters, category: e.target.value });
                 setPagination({ ...pagination, page: 1 });
               }}
@@ -216,6 +222,7 @@ export default function AdminProductsPage() {
             <select
               value={filters.sort}
               onChange={(e) => {
+                setLoading(true);
                 setFilters({ ...filters, sort: e.target.value });
                 setPagination({ ...pagination, page: 1 });
               }}
@@ -271,12 +278,14 @@ export default function AdminProductsPage() {
                       <tr key={product._id} className="hover:bg-[var(--color-bg-tertiary)]">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-[var(--color-bg-secondary)] rounded flex-shrink-0">
+                            <div className="relative w-12 h-12 bg-[var(--color-bg-secondary)] rounded flex-shrink-0 overflow-hidden">
                               {product.images?.[0]?.url && (
-                                <img
+                                <Image
                                   src={product.images[0].url}
                                   alt={product.name}
-                                  className="w-full h-full object-cover rounded"
+                                  fill
+                                  sizes="48px"
+                                  className="object-cover"
                                 />
                               )}
                             </div>
@@ -355,7 +364,10 @@ export default function AdminProductsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPagination({ ...pagination, page: pagination.page - 1 })}
+                      onClick={() => {
+                        setLoading(true);
+                        setPagination({ ...pagination, page: pagination.page - 1 });
+                      }}
                       disabled={pagination.page === 1}
                     >
                       Previous
@@ -363,7 +375,10 @@ export default function AdminProductsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPagination({ ...pagination, page: pagination.page + 1 })}
+                      onClick={() => {
+                        setLoading(true);
+                        setPagination({ ...pagination, page: pagination.page + 1 });
+                      }}
                       disabled={pagination.page === pagination.pages}
                     >
                       Next

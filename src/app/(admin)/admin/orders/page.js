@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
@@ -29,24 +29,8 @@ export default function AdminOrdersPage() {
     pages: 0,
   });
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-
-    if (user.role !== 'admin') {
-      router.push('/');
-      return;
-    }
-
-    fetchOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router, filters.status, filters.search, pagination.page]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
 
       const params = new URLSearchParams({
@@ -80,12 +64,29 @@ export default function AdminOrdersPage() {
         setOrders(filteredOrders);
         setPagination((prev) => ({ ...prev, ...data.data.pagination }));
       }
-    } catch (error) {
-      console.error('Fetch orders error:', error);
     } finally {
       setLoading(false);
     }
+  }, [pagination.page, pagination.limit, filters.status, filters.search]);
+
+  const handleRefresh = () => {
+    setLoading(true);
+    fetchOrders().catch((error) => console.error('Fetch orders error:', error));
   };
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    if (user.role !== 'admin') {
+      router.push('/');
+      return;
+    }
+
+    fetchOrders().catch((error) => console.error('Fetch orders error:', error));
+  }, [user, router, fetchOrders]);
 
   const updateOrderStatus = async (orderId, newStatus, trackingNumber = '') => {
     try {
@@ -223,13 +224,19 @@ export default function AdminOrdersPage() {
               type="text"
               placeholder="Search by order number, name, or email..."
               value={filters.search}
-              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+              onChange={(e) => {
+                setLoading(true);
+                setFilters({ ...filters, search: e.target.value });
+              }}
               className="flex-1 px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:border-[var(--color-brand-primary)]"
             />
 
             <select
               value={filters.status}
-              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+              onChange={(e) => {
+                setLoading(true);
+                setFilters({ ...filters, status: e.target.value });
+              }}
               className="px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:border-[var(--color-brand-primary)]"
             >
               <option value="">All Status</option>
@@ -240,7 +247,7 @@ export default function AdminOrdersPage() {
               <option value="cancelled">Cancelled</option>
             </select>
 
-            <Button onClick={fetchOrders}>Refresh</Button>
+            <Button onClick={handleRefresh}>Refresh</Button>
           </div>
         </div>
 

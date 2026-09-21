@@ -1,9 +1,19 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useContext, useState, useCallback, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 const ToastContext = createContext(null);
+
+// Detects whether we are running on the client without triggering a
+// synchronous state update inside an effect during hydration.
+const emptySubscribe = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
 export const useToast = () => {
   const context = useContext(ToastContext);
@@ -15,11 +25,7 @@ export const useToast = () => {
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));

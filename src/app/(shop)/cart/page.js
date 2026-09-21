@@ -85,7 +85,7 @@ export default function CartPage() {
               Your Cart is Empty
             </h2>
             <p className="text-[var(--color-text-secondary)] mb-6 sm:mb-7 text-base sm:text-lg">
-              Looks like you haven't added anything to your cart yet. Start shopping now!
+              Looks like you haven&apos;t added anything to your cart yet. Start shopping now!
             </p>
             <Link href="/products">
               <Button size="lg">
@@ -154,7 +154,7 @@ export default function CartPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <p className="text-xs sm:text-sm font-semibold text-green-800 flex items-center gap-2">
-                Congratulations! You've unlocked FREE shipping!
+                Congratulations! You&apos;ve unlocked FREE shipping!
               </p>
             </div>
           )}

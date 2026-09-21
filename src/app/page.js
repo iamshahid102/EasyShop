@@ -177,7 +177,7 @@ export default function Home() {
                 Premium Shopping Experience
               </h2>
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
-                We're committed to providing you with the best shopping experience
+                We&apos;re committed to providing you with the best shopping experience
               </p>
             </div>
 

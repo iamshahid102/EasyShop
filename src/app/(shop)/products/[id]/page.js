@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,13 +31,8 @@ export default function ProductDetailPage({ params }) {
   const [addingToCart, setAddingToCart] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  useEffect(() => {
-    fetchProduct();
-  }, [productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await fetch(`/api/public/products/${productId}`);
       const data = await res.json();
 
@@ -46,13 +41,17 @@ export default function ProductDetailPage({ params }) {
       } else {
         router.push("/products");
       }
-    } catch (err) {
-      console.error("Fetch product error:", err);
-      router.push("/products");
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId, router]);
+
+  useEffect(() => {
+    fetchProduct().catch((err) => {
+      console.error("Fetch product error:", err);
+      router.push("/products");
+    });
+  }, [fetchProduct, router]);
 
   const handleAddToCart = async () => {
     if (!user) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/Toast';
@@ -33,22 +33,7 @@ export default function EditProductPage() {
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-
-    if (user.role !== 'admin') {
-      router.push('/');
-      return;
-    }
-
-    fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router, productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(`/api/admin/products/${productId}`, {
@@ -78,13 +63,27 @@ export default function EditProductPage() {
         error('Product not found');
         router.push('/admin/products');
       }
-    } catch (err) {
-      console.error('Fetch product error:', err);
-      error('Error loading product');
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId, error, router]);
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    if (user.role !== 'admin') {
+      router.push('/');
+      return;
+    }
+
+    fetchProduct().catch((err) => {
+      console.error('Fetch product error:', err);
+      error('Error loading product');
+    });
+  }, [user, router, fetchProduct, error]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

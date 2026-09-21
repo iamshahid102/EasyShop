@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/products/ProductCard';
@@ -23,14 +23,8 @@ export default function ProductsPage() {
     pages: 0,
   });
 
-  useEffect(() => {
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters.search, filters.category, filters.sort, pagination.page]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      setLoading(true);
       const params = new URLSearchParams({
         page: pagination.page,
         limit: pagination.limit,
@@ -44,17 +38,19 @@ export default function ProductsPage() {
 
       if (data.success) {
         setProducts(data.data.products);
-        setPagination({
-          ...pagination,
+        setPagination((prev) => ({
+          ...prev,
           ...data.data.pagination,
-        });
+        }));
       }
-    } catch (error) {
-      console.error('Fetch products error:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.search, filters.category, filters.sort, pagination.page, pagination.limit]);
+
+  useEffect(() => {
+    fetchProducts().catch((error) => console.error('Fetch products error:', error));
+  }, [fetchProducts]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -106,6 +102,7 @@ export default function ProductsPage() {
               {(filters.search || filters.category) && (
                 <button
                   onClick={() => {
+                    setLoading(true);
                     setFilters({ search: '', category: '', sort: filters.sort });
                     setPagination({ ...pagination, page: 1 });
                   }}
@@ -124,7 +121,10 @@ export default function ProductsPage() {
                     type="text"
                     placeholder="Search products..."
                     value={filters.search}
-                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    onChange={(e) => {
+                      setLoading(true);
+                      setFilters({ ...filters, search: e.target.value });
+                    }}
                     className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-[var(--color-border)] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]/30 focus:border-[var(--color-brand-primary)] transition-all bg-[var(--color-bg-primary)]"
                   />
                   <svg
@@ -147,6 +147,7 @@ export default function ProductsPage() {
               <div className="relative">
                 <select
                   value={filters.category}                    onChange={(e) => {
+                    setLoading(true);
                     setFilters({ ...filters, category: e.target.value });
                     setPagination({ ...pagination, page: 1 });
                   }}
@@ -177,6 +178,7 @@ export default function ProductsPage() {
               <div className="relative">
                 <select
                   value={filters.sort}                    onChange={(e) => {
+                    setLoading(true);
                     setFilters({ ...filters, sort: e.target.value });
                     setPagination({ ...pagination, page: 1 });
                   }}
@@ -257,7 +259,10 @@ export default function ProductsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPagination({ ...pagination, page: pagination.page - 1 })}
+                      onClick={() => {
+                        setLoading(true);
+                        setPagination({ ...pagination, page: pagination.page - 1 });
+                      }}
                       disabled={pagination.page === 1}
                       className="text-xs sm:text-sm"
                     >
@@ -283,7 +288,10 @@ export default function ProductsPage() {
                         return (
                           <button
                             key={i}
-                            onClick={() => setPagination({ ...pagination, page: pageNum })}
+                            onClick={() => {
+                              setLoading(true);
+                              setPagination({ ...pagination, page: pageNum });
+                            }}
                             className={`w-10 h-10 rounded-lg font-medium transition-all ${
                               pageNum === pagination.page
                                 ? 'bg-[var(--color-base-accent-1)] text-white shadow-md'
@@ -299,7 +307,10 @@ export default function ProductsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPagination({ ...pagination, page: pagination.page + 1 })}
+                      onClick={() => {
+                        setLoading(true);
+                        setPagination({ ...pagination, page: pagination.page + 1 });
+                      }}
                       disabled={pagination.page === pagination.pages}
                       className="text-xs sm:text-sm"
                     >
@@ -327,6 +338,7 @@ export default function ProductsPage() {
               <Button
                 variant="primary"
                 onClick={() => {
+                  setLoading(true);
                   setFilters({ search: '', category: '', sort: '-createdAt' });
                   setPagination({ ...pagination, page: 1 });
                 }}

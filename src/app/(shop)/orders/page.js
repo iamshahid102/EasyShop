@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,18 +20,7 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
 
-  useEffect(() => {
-    if (!user && !authLoading) {
-      router.push("/login");
-      return;
-    }
-    if (user) {
-      fetchOrders();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, authLoading]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch("/api/customer/orders", {
@@ -45,12 +34,20 @@ export default function OrdersPage() {
       if (data.success) {
         setOrders(data.data.orders);
       }
-    } catch (error) {
-      console.error("Fetch orders error:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!user && !authLoading) {
+      router.push("/login");
+      return;
+    }
+    if (user) {
+      fetchOrders().catch((error) => console.error("Fetch orders error:", error));
+    }
+  }, [user, authLoading, router, fetchOrders]);
 
   const getStatusBadge = (status) => {
     const statusConfig = {

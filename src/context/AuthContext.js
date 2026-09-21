@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext({});
@@ -19,54 +19,45 @@ export const AuthProvider = ({ children }) => {
   const [authError, setAuthError] = useState(null);
   const router = useRouter();
 
-  // FIX: Run checkAuth ONLY once on mount, not on every pathname change
-  useEffect(() => {
-    checkAuth();
-  }, []); // Empty dependency array - runs only once
+  // Uses a promise chain so every state update happens asynchronously,
+  // avoiding a synchronous setState during the mount effect.
+  const checkAuth = useCallback(() => {
+    const token = localStorage.getItem('token');
 
-  const checkAuth = async () => {
-    try {
-      const token = localStorage.getItem('token');
+    const request = token
+      ? fetch('/api/auth/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }).then((res) => (res.ok ? res.json() : { success: false }))
+      : Promise.resolve({ success: false });
 
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
-      const res = await fetch('/api/auth/me', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
+    return request
+      .then((data) => {
+        if (data && data.success) {
           setUser(data.data.user);
           localStorage.setItem('user', JSON.stringify(data.data.user));
         } else {
-          // Token invalid
+          // Token missing or invalid - clear everything
           setUser(null);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
-      } else {
-        // Not authenticated - clear everything
+      })
+      .catch((error) => {
+        console.error('[ERROR] Auth check failed:', error);
         setUser(null);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-      }
-    } catch (error) {
-      console.error('[ERROR] Auth check failed:', error);
-      setUser(null);
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    } finally {
-      setLoading(false);
-    }
-  };
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // FIX: Run checkAuth ONLY once on mount, not on every pathname change
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]); // Runs only when the (stable) callback identity changes
 
   const login = async (email, password) => {
     try {

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 
 const CartContext = createContext({});
@@ -39,29 +39,30 @@ async function cartFetch(url, options = {}) {
 export const CartProvider = ({ children }) => {
   const { user } = useAuth();
   const [cart, setCart] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user && user.role === 'user') {
-      fetchCart();
-    } else {
-      setCart(null);
-    }
-  }, [user]);
-
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     try {
-      setLoading(true);
       const result = await cartFetch('/api/customer/cart', { method: 'GET' });
       if (result.success) {
         setCart(result.data);
       }
-    } catch (error) {
-      console.error('Fetch cart error:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (user && user.role === 'user') {
+      fetchCart().catch((error) => console.error('Fetch cart error:', error));
+    }
+  }, [user, fetchCart]);
+
+  // Only logged-in customers have a cart; logging out clears the view
+  // without needing a synchronous state update inside the effect above.
+  const isCustomer = user?.role === 'user';
+  const visibleCart = isCustomer ? cart : null;
+  const visibleLoading = isCustomer ? loading : false;
 
   const addToCart = async (productId, quantity = 1) => {
     try {
@@ -113,14 +114,14 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const cartItemsCount = cart?.items?.length || 0;
-  const cartTotal = cart?.total || 0;
+  const cartItemsCount = visibleCart?.items?.length || 0;
+  const cartTotal = visibleCart?.total || 0;
 
   return (
     <CartContext.Provider
       value={{
-        cart,
-        loading,
+        cart: visibleCart,
+        loading: visibleLoading,
         cartItemsCount,
         cartTotal,
         addToCart,

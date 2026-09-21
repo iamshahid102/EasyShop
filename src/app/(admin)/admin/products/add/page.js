@@ -13,7 +13,7 @@ import { LoadingPage } from '@/components/ui/LoadingSpinner';
 
 export default function AddProductPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,11 +32,13 @@ export default function AddProductPage() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Derived during render instead of a state flag set inside an effect
+  const checkingAuth = authLoading || !user || user.role !== 'admin';
 
   useEffect(() => {
     // Wait for auth context to load
-    if (loading) {
+    if (authLoading) {
       return; // Still checking auth in context
     }
 
@@ -47,12 +49,8 @@ export default function AddProductPage() {
 
     if (user.role !== 'admin') {
       router.push('/');
-      return;
     }
-
-    // Auth check passed
-    setCheckingAuth(false);
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

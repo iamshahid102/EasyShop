@@ -8,6 +8,29 @@ import { useAuth } from '@/context/AuthContext';
 import { formatPrice } from '@/lib/utils/helpers';
 import { FaChartBar, FaBox, FaUsers, FaMoneyBillWave } from 'react-icons/fa';
 
+const calculateRevenueByMonth = (orders) => {
+  const monthlyRevenue = {};
+  const now = new Date();
+
+  // Initialize last 6 months
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = date.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+    monthlyRevenue[key] = 0;
+  }
+
+  // Calculate revenue
+  orders.forEach((order) => {
+    const orderDate = new Date(order.createdAt);
+    const key = orderDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+    if (monthlyRevenue[key] !== undefined) {
+      monthlyRevenue[key] += order.totalPrice;
+    }
+  });
+
+  return Object.entries(monthlyRevenue).map(([month, revenue]) => ({ month, revenue }));
+};
+
 export default function AdminAnalyticsPage() {
   const router = useRouter();
   const { user } = useAuth();
@@ -31,7 +54,6 @@ export default function AdminAnalyticsPage() {
 
   const fetchAnalytics = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
 
       // Fetch all necessary data
@@ -118,8 +140,6 @@ export default function AdminAnalyticsPage() {
           recentActivity: orders.slice(0, 10),
         });
       }
-    } catch (error) {
-      console.error('Fetch analytics error:', error);
     } finally {
       setLoading(false);
     }
@@ -136,31 +156,10 @@ export default function AdminAnalyticsPage() {
       return;
     }
 
-    fetchAnalytics();
+    fetchAnalytics().catch((error) =>
+      console.error('Fetch analytics error:', error)
+    );
   }, [user, router, fetchAnalytics, dateRange]);
-
-  const calculateRevenueByMonth = (orders) => {
-    const monthlyRevenue = {};
-    const now = new Date();
-
-    // Initialize last 6 months
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const key = date.toLocaleString('en-US', { month: 'short', year: 'numeric' });
-      monthlyRevenue[key] = 0;
-    }
-
-    // Calculate revenue
-    orders.forEach((order) => {
-      const orderDate = new Date(order.createdAt);
-      const key = orderDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
-      if (monthlyRevenue[key] !== undefined) {
-        monthlyRevenue[key] += order.totalPrice;
-      }
-    });
-
-    return Object.entries(monthlyRevenue).map(([month, revenue]) => ({ month, revenue }));
-  };
 
   if (!user || user.role !== 'admin') {
     return null;
@@ -184,7 +183,10 @@ export default function AdminAnalyticsPage() {
         </div>
         <select
           value={dateRange}
-          onChange={(e) => setDateRange(e.target.value)}
+          onChange={(e) => {
+            setLoading(true);
+            setDateRange(e.target.value);
+          }}
           className="px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
         >
           <option value="7">Last 7 Days</option>

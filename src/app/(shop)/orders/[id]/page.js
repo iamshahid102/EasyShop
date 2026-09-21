@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -32,19 +32,8 @@ export default function OrderDetailPage({ params }) {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user && !authLoading) {
-      router.push("/login");
-      return;
-    }
-    if (user) {
-      fetchOrder();
-    }
-  }, [user, authLoading, orderId]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem("token");
       const res = await fetch(`/api/customer/orders/${orderId}`, {
         headers: {
@@ -60,13 +49,23 @@ export default function OrderDetailPage({ params }) {
         console.error(data.message || "Order not found");
         router.push("/orders");
       }
-    } catch (error) {
-      console.error("Fetch order error:", error);
-      router.push("/orders");
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId, router]);
+
+  useEffect(() => {
+    if (!user && !authLoading) {
+      router.push("/login");
+      return;
+    }
+    if (user) {
+      fetchOrder().catch((error) => {
+        console.error("Fetch order error:", error);
+        router.push("/orders");
+      });
+    }
+  }, [user, authLoading, router, fetchOrder]);
 
   const getStatusBadge = (status) => {
     const statusConfig = {
@@ -185,8 +184,8 @@ export default function OrderDetailPage({ params }) {
                     Order Placed Successfully!
                   </h3>
                   <p className="text-sm sm:text-base text-green-800 mb-3 sm:mb-4">
-                    Thank you for your order! We've received your order and will
-                    start processing it soon. You'll receive an email
+                    Thank you for your order! We&apos;ve received your order and will
+                    start processing it soon. You&apos;ll receive an email
                     confirmation shortly.
                   </p>
                   <div className="flex flex-wrap gap-2 sm:gap-3">

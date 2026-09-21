@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { FaShoppingBag, FaBullseye, FaHeart, FaSeedling } from 'react-icons/fa';
@@ -60,9 +61,15 @@ export default function AboutPage() {
                   Since our founding, we&apos;ve been committed to curating the best products from trusted brands.
                 </p>
               </div>
-              <div className="bg-[var(--color-bg-secondary)] rounded-2xl aspect-video flex items-center justify-center border border-[var(--color-border)]">
+              <div className="relative bg-[var(--color-bg-secondary)] rounded-2xl aspect-video flex items-center justify-center border border-[var(--color-border)] overflow-hidden">
                 {/* <FaShoppingBag className="w-20 h-20 text-[var(--color-text-tertiary)]" /> */}
-                <img src="https://cdn.pixabay.com/photo/2016/11/22/21/57/apparel-1850804_1280.jpg" alt="Apparel" className="object-cover w-full h-full rounded-2xl aspect-video" />
+                <Image
+                  src="https://cdn.pixabay.com/photo/2016/11/22/21/57/apparel-1850804_1280.jpg"
+                  alt="Apparel"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>

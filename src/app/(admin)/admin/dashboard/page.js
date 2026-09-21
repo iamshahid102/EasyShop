@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { formatPrice } from '@/lib/utils/helpers';
 import { FaBox, FaShoppingCart, FaMoneyBillWave, FaExclamationTriangle, FaPlus, FaList, FaChartBar, FaUsers } from 'react-icons/fa';
@@ -21,24 +22,8 @@ export default function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-      return;
-    }
-
-    if (user.role !== 'admin') {
-      router.push('/');
-      return;
-    }
-
-    fetchDashboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
 
       // Fetch products (admin endpoint)
@@ -72,12 +57,26 @@ export default function AdminDashboard() {
             .slice(0, 5),
         });
       }
-    } catch (error) {
-      console.error('Fetch dashboard data error:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    if (user.role !== 'admin') {
+      router.push('/');
+      return;
+    }
+
+    fetchDashboardData().catch((error) =>
+      console.error('Fetch dashboard data error:', error)
+    );
+  }, [user, router, fetchDashboardData]);
 
   const getStatusColor = (status) => {
     const colors = {
@@ -109,7 +108,7 @@ export default function AdminDashboard() {
         {/* Welcome Header */}
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-brand-accent)]">Dashboard</h1>
-          <p className="text-[var(--color-text-secondary)] mt-1">Welcome back, {user.name}! Here's your store overview.</p>
+          <p className="text-[var(--color-text-secondary)] mt-1">Welcome back, {user.name}! Here&apos;s your store overview.</p>
         </div>
 
         {/* Stats Grid */}
@@ -221,9 +220,15 @@ export default function AdminDashboard() {
                 stats.topProducts.map((product) => (
                   <div key={product._id} className="p-4 hover:bg-[var(--color-bg-secondary)]">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-[var(--color-bg-tertiary)] rounded-xl flex-shrink-0 overflow-hidden">
+                      <div className="relative w-12 h-12 bg-[var(--color-bg-tertiary)] rounded-xl flex-shrink-0 overflow-hidden">
                         {product.images?.[0]?.url && (
-                          <img src={product.images[0].url} alt={product.name} className="w-full h-full object-cover" />
+                          <Image
+                            src={product.images[0].url}
+                            alt={product.name}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                          />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">

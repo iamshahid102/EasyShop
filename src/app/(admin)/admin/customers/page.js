@@ -25,7 +25,6 @@ export default function AdminCustomersPage() {
 
   const fetchCustomers = useCallback(async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem('token');
 
       const params = new URLSearchParams({
@@ -45,12 +44,15 @@ export default function AdminCustomersPage() {
         setCustomers(data.data.users);
         setPagination((prev) => ({ ...prev, ...data.data.pagination }));
       }
-    } catch (error) {
-      console.error('Fetch customers error:', error);
     } finally {
       setLoading(false);
     }
   }, [pagination.page, pagination.limit, filters.search, filters.role]);
+
+  const handleRefresh = () => {
+    setLoading(true);
+    fetchCustomers().catch((error) => console.error('Fetch customers error:', error));
+  };
 
   useEffect(() => {
     if (!user) {
@@ -63,7 +65,7 @@ export default function AdminCustomersPage() {
       return;
     }
 
-    fetchCustomers();
+    fetchCustomers().catch((error) => console.error('Fetch customers error:', error));
   }, [user, router, fetchCustomers]);
 
   if (!user || user.role !== 'admin') {
@@ -105,13 +107,19 @@ export default function AdminCustomersPage() {
             type="text"
             placeholder="Search by name or email..."
             value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+            onChange={(e) => {
+              setLoading(true);
+              setFilters({ ...filters, search: e.target.value });
+            }}
             className="flex-1 px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:border-[var(--color-brand-primary)]"
           />
 
           <select
             value={filters.role}
-            onChange={(e) => setFilters({ ...filters, role: e.target.value })}
+            onChange={(e) => {
+              setLoading(true);
+              setFilters({ ...filters, role: e.target.value });
+            }}
             className="px-4 py-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:border-[var(--color-brand-primary)]"
           >
             <option value="">All Roles</option>
@@ -119,7 +127,7 @@ export default function AdminCustomersPage() {
             <option value="admin">Admins</option>
           </select>
 
-          <Button onClick={fetchCustomers}>Refresh</Button>
+          <Button onClick={handleRefresh}>Refresh</Button>
         </div>
       </div>
 
@@ -238,7 +246,10 @@ export default function AdminCustomersPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setPagination({ ...pagination, page: pagination.page - 1 })}
+                    onClick={() => {
+                      setLoading(true);
+                      setPagination({ ...pagination, page: pagination.page - 1 });
+                    }}
                     disabled={pagination.page === 1}
                   >
                     Previous
@@ -246,7 +257,10 @@ export default function AdminCustomersPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setPagination({ ...pagination, page: pagination.page + 1 })}
+                    onClick={() => {
+                      setLoading(true);
+                      setPagination({ ...pagination, page: pagination.page + 1 });
+                    }}
                     disabled={pagination.page === pagination.pages}
                   >
                     Next
